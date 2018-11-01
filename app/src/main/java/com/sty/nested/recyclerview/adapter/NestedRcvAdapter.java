@@ -40,16 +40,16 @@ public class NestedRcvAdapter extends RecyclerView.Adapter<NestedRcvAdapter.View
         holder.tvTitle.setText(data.getTitle());
 
         ChildAdapter childAdapter = (ChildAdapter) holder.rcvChild.getAdapter();
-        //适配器复用可能导致子数据错乱
-//        if(childAdapter == null){
+        //适配器复用
+        if(childAdapter == null){
             RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
             manager.setAutoMeasureEnabled(true);
             holder.rcvChild.setLayoutManager(manager);
             holder.rcvChild.setAdapter(new ChildAdapter(data.getChildBeanList(), position));
-//        }else{
-//            childAdapter.setData(data.getChildBeanList()); //重新设置数据
-//            childAdapter.notifyDataSetChanged();
-//        }
+        }else{
+            childAdapter.setData(data.getChildBeanList()); //重新设置数据
+            childAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -91,9 +91,13 @@ public class NestedRcvAdapter extends RecyclerView.Adapter<NestedRcvAdapter.View
             holder.tvChildValue.setText(childBean.getChildValue());
             if(position == 0){
                 holder.tvTopLine.setVisibility(View.INVISIBLE);
+            }else{ //important
+                holder.tvTopLine.setVisibility(View.VISIBLE);
             }
             if(position == childList.size() - 1){
                 holder.tvBottomLine.setVisibility(View.INVISIBLE);
+            }else{ //important
+                holder.tvBottomLine.setVisibility(View.VISIBLE);
             }
             holder.mContentView.setOnClickListener(new View.OnClickListener() {
                 @Override
